@@ -3,17 +3,27 @@
 import { useState } from "react";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import { SocialIcon } from "react-social-icons";
-import useCheckMobileScreen from "../../hooks/useCheckMobileScreen";
+import { useForm, SubmitHandler } from "react-hook-form";
+import GoogleLogin from "@/components/GoogleLogin";
+import FacebookLogin from "@/components/FacebookLogin";
+import GithubLogin from "@/components/GithubLogin";
+
+interface IFormInput {
+  username: string;
+  password: string;
+}
 
 export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const { register, handleSubmit, watch } = useForm<IFormInput>();
 
-  const [passwordShown, setPasswordShown] = useState(false);
-  const isMobile = useCheckMobileScreen()
+  const [passwordShown, setPasswordShown] = useState<boolean>(false);
+
+  const onSubmit: SubmitHandler<IFormInput> = (data) => {
+    console.log(data);
+  };
 
   return (
-    <div className="flex flex-row flex-wrap p-10">
+    <div className="flex flex-row flex-wrap p-10 justify-center items-center">
       {/* Form Container */}
       <div className="flex flex-col justify-center items-center">
         {/* Form Header */}
@@ -26,11 +36,15 @@ export default function Login() {
         </div>
 
         {/* Form Inputs */}
-        <div className="form-inputs flex flex-col gap-4 w-full">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="form-inputs flex flex-col gap-4 w-full"
+        >
           <input
             className="rounded-md border-2 border-gray-300 p-3"
-            type="email"
+            type="text"
             placeholder="Username"
+            {...register("username", { required: true })}
           />
 
           <div className="relative flex items-center">
@@ -38,8 +52,7 @@ export default function Login() {
               className="rounded-md border-2 border-gray-300 p-3 w-full"
               type={passwordShown ? "text" : "password"}
               placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              {...register("password", { required: true })}
             />
             <button
               type="button"
@@ -58,8 +71,10 @@ export default function Login() {
               Forgot Password?
             </a>
           </div>
-          <button className="rounded-md bg-black p-3 text-white">Login</button>
-        </div>
+          <button className="rounded-md bg-black p-3 text-white" type="submit">
+            Login
+          </button>
+        </form>
 
         {/* Form Divider */}
         <div className="my-7 flex items-center justify-center w-full">
@@ -70,9 +85,9 @@ export default function Login() {
 
         {/* Social Media Icons */}
         <div className="flex justify-center gap-10">
-          <SocialIcon network="google" bgColor="#000" onClick={() => {}} />
-          <SocialIcon network="facebook" bgColor="#000" onClick={() => {}} />
-          <SocialIcon network="github" bgColor="#000" onClick={() => {}} />
+          <GoogleLogin />
+          <FacebookLogin />
+          <GithubLogin />
         </div>
         {/* Form footer */}
         <div className="mt-8 text-center">
@@ -82,7 +97,6 @@ export default function Login() {
           </a>
         </div>
       </div>
-      {!isMobile && <div id="image-container">test</div>}
     </div>
   );
 }
