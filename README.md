@@ -5,6 +5,9 @@ Create .env file in the root of the project and add the following variables
 ```bash
 GOOGLE_AUTH_CLIENT_ID=
 GOOGLE_AUTH_CLIENT_SECRET=
+NEXT_PUBLIC_REACT_AUTH_APP_ID=
+NEXT_PUBLIC_GITHUB_CLIENT_ID=
+NEXT_PUBLIC_GITHUB_CLIENT_SECRET=
 ```
 
 
